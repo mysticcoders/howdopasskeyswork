@@ -39,8 +39,14 @@ This does not change production configuration or verify the newer compatibility 
 
 The written-guide change passed type/lint and production build checks. Browser inspection covered desktop and 390px mobile layouts, wrapped signature/endpoint examples, section navigation, return navigation, disclosure collapse, and beginner sign-in progression. Keyboard checks confirmed section-anchor focus and the next source link. No horizontal overflow was observed on mobile. OS appearance switching, enlarged text, physical devices, and production deployment remain unverified.
 
+## Latest delivery
+
+- Deployed reviewed guide commit `97f0d8a` to Cloudflare Worker `howdopasskeyswork`, version `cc3b38b0-bbe2-4882-814c-5bbf485b21ea`. Production HTTPS/content checks and five exact asset comparisons passed; the live beginner sign-in and guide disclosure worked in the browser.
+- Follow-up data fragments are preview-only: decoded registration public key, a 32-byte example challenge represented as base64url, and a shortened sign-in response with the matching challenge. Direction labels and explicit fictional/decoded labels prevent confusing these with complete wire payloads. Never include a private key in a website-bound example.
+- Follow-up validation: type/lint and production build passed; all three fragments inspected at desktop and 390px mobile widths. Long values wrap within their cards. OS light/dark switching, enlarged text, and physical devices remain unchecked.
+
 ## Next steps
 
 1. Ask nondevelopers to explain what is saved, what is sent, and why a fake website cannot use the passkey after using the example.
 2. Verify OS light/dark switching, 200% text enlargement, and physical devices; update the local runtime to support the production date.
-3. Deploy only with explicit authorization, then run live smoke checks.
+3. Review the data fragments in local preview; deploy that follow-up only with explicit authorization, then rerun live smoke checks.

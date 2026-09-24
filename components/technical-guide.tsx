@@ -1,3 +1,13 @@
+function DataFragment({ title, direction, children, note }: { title: string; direction: string; children: string; note: string }) {
+  return <figure className="guide-packet">
+    <figcaption><span className="eyebrow">{direction}</span><h4>{title}</h4></figcaption>
+    <pre><code>{children}</code></pre>
+    <p>{note}</p>
+  </figure>;
+}
+
+const exampleChallenge = 'qGtaOP6qT7LOKxtrsd-koChtLA69XJ9ltWH-sw9r7U8';
+
 export function TechnicalGuide() {
   return <details className="technical-layer" id="technical-details">
     <summary><div><span className="eyebrow">CURIOUS ABOUT THE DETAILS?</span><h2>What happens at every step</h2><p>The full explanation: who does what, what gets sent, and what the server checks.</p></div><span aria-hidden="true">+</span></summary>
@@ -24,6 +34,15 @@ export function TechnicalGuide() {
           <li><h4>You approve; the authenticator creates the key pair.</h4><p>Your face, fingerprint, or device PIN can authorize the operation locally. The credential is scoped to the website’s relying party ID. The private key stays protected by the authenticator or provider.</p></li>
           <li><h4>The server validates and saves the result.</h4><p>The browser returns a credential ID, client data, and an attestation object containing registration information, including the public key. The server verifies the expected challenge, origin, RP ID and required flags, and processes attestation according to policy. It then links the verified credential to the account.</p></li>
         </ol>
+        <DataFragment title="The public key goes to the website here." direction="SETUP · BROWSER → SERVER" note="Illustrative decoded view, with values shortened by …; this is not a complete response or a usable key. The public key is inside the attestation object’s authenticator data, encoded as a COSE key. These labels translate its numeric fields into words. The server extracts and stores it after validating registration.">{`credential ID: kY7p…Q2w
+attestationObject → authData
+  → credentialPublicKey:
+      key type: EC2
+      algorithm: ES256
+      curve: P-256
+      x (hex): 9f2c7a81…
+      y (hex): 4b18d6e3…`}</DataFragment>
+        <p>The two coordinates, <code>x</code> and <code>y</code>, describe this example’s public key. They are safe for the website to receive. The private key is not part of the registration response.</p>
         <p className="guide-source">Registration details: <a href="https://developers.google.com/identity/passkeys/developer-guides/server-registration" target="_blank" rel="noreferrer">Google’s server registration guide ↗</a></p>
         <aside className="guide-callout"><h4>What gets stored?</h4><p>The server keeps the credential ID, public key, account association, counter and relevant credential metadata. It does not store your private key, fingerprint, face, or device PIN.</p><p>A synced passkey may become available on other supported devices through your provider. A device-bound passkey stays on its authenticator. These are different storage choices; “the private key never goes to the website” does not mean “it can never be synced.”</p><p className="guide-source"><a href="https://fidoalliance.org/passkeys/" target="_blank" rel="noreferrer">FIDO: synced and device-bound passkeys ↗</a></p></aside>
       </section>
@@ -36,6 +55,27 @@ export function TechnicalGuide() {
           <li><h4>The authenticator makes the cryptographic proof.</h4><p>It signs the authenticator data together with a hash of the browser’s client data. The client data includes the challenge and page origin; authenticator data includes an RP ID hash and flags. That binds the proof to this attempt and website context.</p><div className="guide-formula"><code>signature = Sign(privateKey, authenticatorData || SHA256(clientDataJSON))</code></div><p>Here, <code>||</code> means joining bytes. The private key is used to calculate the signature; it is not included in the response.</p></li>
           <li><h4>“You’re in”: the server verifies before creating a session.</h4><p>The browser returns the credential ID, signature, authenticator data, client data and, when provided, user handle. The server looks up the saved public key and checks the signature plus the expected challenge, origin, RP ID and required presence/verification flags. It checks account ownership and processes counters and backup flags according to policy.</p><p>Only after successful verification does the application establish its normal signed-in session. An unresolved, cancelled, expired or invalid response must not sign anyone in.</p></li>
         </ol>
+        <DataFragment title="A challenge looks like random text." direction="SIGN-IN · SERVER → BROWSER" note="A fictional request-options fragment. This full example challenge represents 32 random bytes written as base64url text. Base64url is a way of writing bytes, not encryption. The challenge is not a password or secret; it must be unpredictable and fresh for each attempt.">{`{
+  "challenge": "${exampleChallenge}",
+  "rpId": "mysticcoders.com",
+  "userVerification": "required"
+}`}</DataFragment>
+        <DataFragment title="The response ties the proof to that challenge." direction="SIGN-IN · BROWSER → SERVER" note="Illustrative response fragments, unpacked for reading; … marks shortened values. In JSON transport, binary fields such as clientDataJSON, authenticatorData and signature are commonly base64url strings. Here clientDataJSON is decoded so you can see the same challenge coming back. These fragments are not a valid signed response.">{`credential ID: kY7p…Q2w
+
+clientDataJSON (decoded):
+{
+  "type": "webauthn.get",
+  "challenge": "${exampleChallenge}",
+  "origin": "https://mysticcoders.com",
+  "crossOrigin": false
+}
+
+authenticatorData (base64url):
+  SZYN5YgO…
+signature (base64url):
+  MEUCIQDx…`}</DataFragment>
+        <p>The credential ID tells the server which saved public key to use. Matching the challenge alone is not enough: the server also checks the signature and website context. The public key was saved during setup; it does not need to be sent again for this sign-in. The private key is never sent to the website.</p>
+        <p className="guide-source">Data formats: <a href="https://www.w3.org/TR/webauthn-3/#sctn-attested-credential-data" target="_blank" rel="noreferrer">Registration public key ↗</a> · <a href="https://www.w3.org/TR/webauthn-3/#dictdef-collectedclientdata" target="_blank" rel="noreferrer">Client data fields ↗</a>.</p>
         <p className="guide-source">Protocol checks: <a href="https://www.w3.org/TR/webauthn-3/#sctn-verifying-assertion" target="_blank" rel="noreferrer">WebAuthn assertion verification ↗</a>. Server flow: <a href="https://developers.google.com/identity/passkeys/developer-guides/server-authentication" target="_blank" rel="noreferrer">Google’s authentication guide ↗</a>.</p>
       </section>
 
