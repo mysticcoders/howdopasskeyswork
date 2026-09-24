@@ -10,6 +10,14 @@ def fetch(url):
 html = fetch(origin).decode()
 assert 'Try a pretend sign-in' in html and 'Your everyday questions.' in html
 assert 'What happens at every step' in html
+assert 'JUCtq-qS' in html and 'SZYN5YgO' not in html
+assert 'Windows Hello' in html
+assert html.count('<h1') == 1 and '<h2 id="simple-title"' in html
+assert all(title in html for title in [
+    'The public key goes to the website here.',
+    'A challenge looks like random text.',
+    'The response ties the proof to that challenge.',
+])
 assert 'Watch mode' not in html and '/audio/scene-' not in html
 files = ['favicon.svg', 'mystic-dragon.webp', 'apple.svg', 'google-password-manager.webp', '1password.svg']
 def verify(path):

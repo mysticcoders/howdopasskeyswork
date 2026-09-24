@@ -18,7 +18,7 @@ Everything is a simulation or explanation. No biometric data, real credentials, 
 
 Production is Cloudflare Worker `howdopasskeyswork` with the custom domain above. The Vite plugin emits `.wrangler/deploy/config.json` pointing to `dist/server/wrangler.json`; static assets use the `ASSETS` binding. No database or OpenAI Sites resources are used.
 
-The checked-in compatibility date is `2026-05-22`, matching the installed Workers runtime. Both `npm run dev` and built previews use that date; no override is needed. Advance it only alongside a runtime update that supports it, and verify both commands. The currently deployed Worker keeps its previous date until the next authorized deployment.
+The checked-in compatibility date is `2026-05-22`, matching the installed Workers runtime. Both `npm run dev` and built previews use that date; no override is needed. Advance it only alongside a runtime update that supports it, and verify both commands. The deployed Worker uses the same compatibility date.
 
 ```sh
 npm run dev
@@ -39,12 +39,14 @@ Restart the built preview after rebuilding so its asset manifest is refreshed.
 
 `npm run check` and the production build are automated local checks. There is no installed CI workflow or current automated browser suite. Visual and interaction checks are performed separately in the browser. The former `npm test` command covered only the removed playback feature; it was replaced with `npm run check` in delivery commands.
 
-The written-guide change passed type/lint and production build checks. Browser inspection covered desktop and 390px mobile layouts, wrapped signature/endpoint examples, section navigation, return navigation, disclosure collapse, and beginner sign-in progression. Keyboard checks confirmed section-anchor focus and the next source link. No horizontal overflow was observed on mobile. OS appearance switching, enlarged text, physical devices, and production deployment remain unverified.
+The written-guide change passed type/lint and production build checks. Browser inspection covered desktop and 390px mobile layouts, wrapped signature/endpoint examples, section navigation, return navigation, disclosure collapse, and beginner sign-in progression. Keyboard checks confirmed section-anchor focus and the next source link. No horizontal overflow was observed on mobile. OS appearance switching, enlarged text, physical devices, remain unverified. Production deployment is recorded below.
 
 ## Latest delivery
 
-- Deployed reviewed guide commit `97f0d8a` to Cloudflare Worker `howdopasskeyswork`, version `cc3b38b0-bbe2-4882-814c-5bbf485b21ea`. Production HTTPS/content checks and five exact asset comparisons passed; the live beginner sign-in and guide disclosure worked in the browser.
-- Follow-up data fragments are preview-only: decoded registration public key, a 32-byte example challenge represented as base64url, and a shortened sign-in response with the matching challenge. Direction labels and explicit fictional/decoded labels prevent confusing these with complete wire payloads. Never include a private key in a website-bound example.
+- Deployed commit `59aec6f`, including the data fragments and review corrections, to `https://howdopasskeyswork.com`. Cloudflare version: `32e193f4-f490-4363-ad83-2ba15ac7cdd6`. Type/lint and build checks passed. Extended production smoke checks confirmed the corrected hash, all three examples, Windows Hello wording, a single h1, the walkthrough h2, and five exact asset matches. Live browser checks confirmed walkthrough progression and the rendered corrected response fragment.
+
+- Earlier release: deployed reviewed guide commit `97f0d8a` to Cloudflare Worker `howdopasskeyswork`, version `cc3b38b0-bbe2-4882-814c-5bbf485b21ea`. Production HTTPS/content checks and five exact asset comparisons passed; the live beginner sign-in and guide disclosure worked in the browser.
+- Data fragments now deployed: decoded registration public key, a 32-byte example challenge represented as base64url, and a shortened sign-in response with the matching challenge. Direction labels and explicit fictional/decoded labels prevent confusing these with complete wire payloads. Never include a private key in a website-bound example.
 - Follow-up validation: type/lint and production build passed; all three fragments inspected at desktop and 390px mobile widths. Long values wrap within their cards. OS light/dark switching, enlarged text, and physical devices remain unchecked.
 
 ## Review corrections
@@ -54,10 +56,10 @@ The written-guide change passed type/lint and production build checks. Browser i
 - Development failed because configuration requested a newer compatibility date than the installed runtime supported. The shared date now matches that runtime; check ordinary development startup as well as builds after future runtime changes.
 - Removed the unused Google PNG and empty Python cache directories; logo provenance identifies the served WebP. Python caches were already ignored by Git.
 
-Review-fix validation: `npm run check` and `npm run build` passed. `npm run dev -- --port 3002` served the page, and the built Worker started on port 3003 without a date override. Desktop/mobile browser inspection confirmed preserved heading appearance and readable Windows Hello wording; the accessibility tree exposed the stable h1 and changing h2. These corrections remain undeployed.
+Review-fix validation: `npm run check` and `npm run build` passed. `npm run dev -- --port 3002` served the page, and the built Worker started on port 3003 without a date override. Desktop/mobile browser inspection confirmed preserved heading appearance and readable Windows Hello wording; the accessibility tree exposed the stable h1 and changing h2. These corrections are now deployed; see Latest delivery.
 
 ## Next steps
 
 1. Ask nondevelopers to explain what is saved, what is sent, and why a fake website cannot use the passkey after using the example.
 2. Verify OS light/dark switching, 200% text enlargement, and physical devices; evaluate a coordinated runtime and compatibility-date upgrade.
-3. Review the data fragments in local preview; deploy that follow-up only with explicit authorization, then rerun live smoke checks.
+3. Run the extended production smoke checks after each authorized deployment.
