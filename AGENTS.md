@@ -7,5 +7,5 @@
 - The interface intentionally uses a light palette and `color-scheme: light` for native controls.
 - The beginner example is the only interactive walkthrough. Keep the detailed layer a written explanation with in-page navigation and specification links. Test disclosures and navigation with consecutive page-level key presses.
 
-- Lead the default explainer with the visitor’s sign-in experience. Keep key pairs, challenges, signatures, and providers in optional explanations; preserve technical accuracy there.
+- Lead the default explainer with account authorization and passkey creation, then show sign-in on the next visit. Never assume the visitor already has a passkey. Keep key pairs, challenges, signatures, and providers in optional explanations; preserve technical accuracy there.
 - When changing disclosure styles, scope expanded-icon transforms to the direct icon child. Verify nested headings stay upright, and pause media when its containing disclosure closes.

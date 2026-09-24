@@ -12,7 +12,7 @@ export function TechnicalGuide() {
   return <details className="technical-layer" id="technical-details">
     <summary><div><span className="eyebrow">CURIOUS ABOUT THE DETAILS?</span><h2>What happens at every step</h2><p>The full explanation: who does what, what gets sent, and what the server checks.</p></div><span aria-hidden="true">+</span></summary>
     <article className="technical-guide" aria-label="Detailed explanation of passkeys">
-      <p className="guide-intro">The example above shows what signing in feels like. Here is what happens behind those moments, including the setup that comes first. This is a written explanation; it does not create a credential or run an authentication request.</p>
+      <p className="guide-intro">The example above shows what signing in feels like. Here is what happens behind those moments, from creating the passkey to using it on a later visit. This is a written explanation; it does not create a credential or run an authentication request.</p>
       <nav className="guide-nav" aria-label="Detailed explanation sections"><a href="#passkey-roles">Who does what</a><a href="#passkey-setup">1. Save a passkey</a><a href="#passkey-signin">2. Sign in</a><a href="#passkey-fake">3. A fake website</a><a href="#passkey-building">Building it</a></nav>
 
       <section id="passkey-roles" className="guide-section" tabIndex={-1}>
@@ -27,7 +27,8 @@ export function TechnicalGuide() {
       </section>
 
       <section id="passkey-setup" className="guide-section" tabIndex={-1}>
-        <span className="eyebrow">BEFORE THE PRETEND SIGN-IN</span><h3>1. Save a passkey for your account.</h3>
+        <span className="eyebrow">THE FIRST THREE MOMENTS IN THE EXAMPLE</span><h3>1. Save a passkey for your account.</h3>
+        <p>For a new account, the website can register a passkey as its first sign-in method; a password is not a WebAuthn requirement. For an existing account, enrollment must be authorized using an existing sign-in or recovery process. Email verification, identity checks, and account recovery are separate decisions made by the website. Approving a local device prompt alone does not establish ownership of an existing account.</p>
         <ol className="guide-steps">
           <li><h4>The server prepares a registration request.</h4><p>For an existing account, it first checks that you are allowed to add a sign-in method. It creates an unpredictable challenge and associates it with this registration attempt. It sends the browser the challenge, website identity, user identifier, supported algorithms, and credential preferences.</p></li>
           <li><h4>The browser asks to create a credential.</h4><p>The page calls <code>navigator.credentials.create()</code> with <code>publicKey</code> options. The browser checks the website’s eligibility and lets you choose an available passkey provider.</p></li>
@@ -48,9 +49,9 @@ attestationObject → authData
       </section>
 
       <section id="passkey-signin" className="guide-section" tabIndex={-1}>
-        <span className="eyebrow">THE THREE MOMENTS IN THE EXAMPLE</span><h3>2. Use the saved passkey to sign in.</h3>
+        <span className="eyebrow">THE NEXT THREE MOMENTS IN THE EXAMPLE</span><h3>2. Use the saved passkey to sign in.</h3>
         <ol className="guide-steps">
-          <li><h4>“You want to sign in”: request a fresh challenge.</h4><p>The server generates a new random challenge for this attempt. It keeps enough state to check the response later. A previously recorded response will not match a fresh challenge. The server must enforce expiration and single use; the browser’s prompt timeout alone does not do that.</p><p>The page calls <code>navigator.credentials.get()</code> with the server’s options. A website can identify an account first and list permitted credential IDs, or let a discoverable passkey identify the account.</p></li>
+          <li><h4>“Next visit”: request a fresh challenge.</h4><p>The server generates a new random challenge for this attempt. It keeps enough state to check the response later. A previously recorded response will not match a fresh challenge. The server must enforce expiration and single use; the browser’s prompt timeout alone does not do that.</p><p>The page calls <code>navigator.credentials.get()</code> with the server’s options. A website can identify an account first and list permitted credential IDs, or let a discoverable passkey identify the account.</p></li>
           <li><h4>“Your device asks for your OK”: select and authorize the key.</h4><p>The browser and authenticator locate a credential for the requested relying party. If user verification is required, an appropriate local check must succeed. A touch showing that someone is present and a PIN or biometric check verifying the user are distinct signals.</p></li>
           <li><h4>The authenticator makes the cryptographic proof.</h4><p>It signs the authenticator data together with a hash of the browser’s client data. The client data includes the challenge and page origin; authenticator data includes an RP ID hash and flags. That binds the proof to this attempt and website context.</p><div className="guide-formula"><code>signature = Sign(privateKey, authenticatorData || SHA256(clientDataJSON))</code></div><p>Here, <code>||</code> means joining bytes. The private key is used to calculate the signature; it is not included in the response.</p></li>
           <li><h4>“You’re in”: the server verifies before creating a session.</h4><p>The browser returns the credential ID, signature, authenticator data, client data and, when provided, user handle. The server looks up the saved public key and checks the signature plus the expected challenge, origin, RP ID and required presence/verification flags. It checks account ownership and processes counters and backup flags according to policy.</p><p>Only after successful verification does the application establish its normal signed-in session. An unresolved, cancelled, expired or invalid response must not sign anyone in.</p></li>

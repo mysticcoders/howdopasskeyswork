@@ -30,7 +30,7 @@ Restart the built preview after rebuilding so its asset manifest is refreshed.
 
 ## Quality and decisions
 
-- Readers struggled when key-pair mechanics preceded the user experience. The main example now starts with sign-in and reveals definitions inline. Actual comprehension still needs audience testing.
+- Readers struggled when key-pair mechanics preceded the user experience. The main example uses everyday actions and reveals definitions inline. It now includes account authorization and creation before sign-in. Actual comprehension still needs audience testing.
 - Repeating the simulation in the detailed layer added another interaction without enough explanation. It is now a static reading guide with section anchors, numbered steps, protocol fields, and source links. The old playback implementation and its tests were removed with that feature.
 - Definition buttons support Enter/Space and expose expanded state. Beginner step changes reset explanations and keep focus on the primary action.
 - A broad disclosure style previously rotated nested headings. Expanded-icon styles now target the direct icon child.
@@ -58,8 +58,14 @@ The written-guide change passed type/lint and production build checks. Browser i
 
 Review-fix validation: `npm run check` and `npm run build` passed. `npm run dev -- --port 3002` served the page, and the built Worker started on port 3003 without a date override. Desktop/mobile browser inspection confirmed preserved heading appearance and readable Windows Hello wording; the accessibility tree exposed the stable h1 and changing h2. These corrections are now deployed; see Latest delivery.
 
+## Creation-first walkthrough (pending deployment)
+
+Readers could not tell where the first passkey came from because the walkthrough assumed one already existed. It now has eight moments: three for account authorization and creation, three for a later sign-in, and two for a fake site. An existing account must authorize enrollment; a new account can start with a passkey without first having a password. Device approval and website account checks are explained separately. FAQ and technical-guide text follow the same order.
+
+Type/lint and production build checks passed. Desktop inspection covered all eight moments; consecutive page-level Enter presses crossed phase boundaries and wrapped back to creation with focus retained. Mobile inspection covered creation, saved confirmation, prerequisite disclosure, key definitions, FAQ and technical setup text. Back resets disclosures; keyboard opening private/public definitions leaves only one open. OS theme switching, enlarged text, physical devices, and reader comprehension remain unverified. The production smoke script now expects the creation-first heading and should run after this update is authorized for deployment.
+
 ## Next steps
 
-1. Ask nondevelopers to explain what is saved, what is sent, and why a fake website cannot use the passkey after using the example.
+1. Review the creation-first preview; ask nondevelopers how the first passkey is created, which account it belongs to, what is sent, and why a fake site cannot use it.
 2. Verify OS light/dark switching, 200% text enlargement, and physical devices; evaluate a coordinated runtime and compatibility-date upgrade.
 3. Run the extended production smoke checks after each authorized deployment.

@@ -8,7 +8,7 @@ origin = 'https://howdopasskeyswork.com'
 def fetch(url):
     return subprocess.check_output(['curl', '-fsS', '--max-time', '20', url])
 html = fetch(origin).decode()
-assert 'Try a pretend sign-in' in html and 'Your everyday questions.' in html
+assert 'First, connect a passkey to your account.' in html and 'Your everyday questions.' in html
 assert 'What happens at every step' in html
 assert 'JUCtq-qS' in html and 'SZYN5YgO' not in html
 assert 'Windows Hello' in html
