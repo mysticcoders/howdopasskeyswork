@@ -41,7 +41,7 @@ export function SimpleStory() {
     <div className="simple-layout">
       <div className="simple-copy">
         <p className="simple-progress">{step < 3 ? `SIGNING IN · ${step + 1} OF 3` : fake ? `THE FAKE WEBSITE · ${step - 2} OF 2` : 'READY TO TRY IT FOR REAL?'}</p>
-        <div aria-live="polite" aria-atomic="true"><h1 id="simple-title">{moment.heading}</h1><p className="simple-description">{moment.copy}</p></div>
+        <div aria-live="polite" aria-atomic="true"><h2 id="simple-title">{moment.heading}</h2><p className="simple-description">{moment.copy}</p></div>
         <div className="simple-actions"><button ref={primaryRef} className="primary-button" onClick={() => go((step + 1) % moments.length)}>{moment.action}<ArrowRight size={18}/></button>{step > 0 && <button className="simple-back" onClick={() => go(step - 1)}><ArrowLeft size={16}/> Back</button>}</div>
         <button className="curiosity-button" aria-expanded={expanded} aria-controls="simple-detail" onClick={() => setExpanded(!expanded)}>{moment.question}<span aria-hidden="true">{expanded ? '−' : '+'}</span></button>
         <div id="simple-detail" hidden={!expanded}>{expanded && <AnswerWithKeys key={step} text={moment.answer}/>}</div>

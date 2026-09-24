@@ -18,13 +18,15 @@ Everything is a simulation or explanation. No biometric data, real credentials, 
 
 Production is Cloudflare Worker `howdopasskeyswork` with the custom domain above. The Vite plugin emits `.wrangler/deploy/config.json` pointing to `dist/server/wrangler.json`; static assets use the `ASSETS` binding. No database or OpenAI Sites resources are used.
 
-The installed local Worker runtime supports dates through 2026-05-22; production is configured for 2026-09-23. To inspect the built artifact with that local limitation:
+The checked-in compatibility date is `2026-05-22`, matching the installed Workers runtime. Both `npm run dev` and built previews use that date; no override is needed. Advance it only alongside a runtime update that supports it, and verify both commands. The currently deployed Worker keeps its previous date until the next authorized deployment.
 
 ```sh
-npx wrangler dev --config dist/server/wrangler.json --compatibility-date 2026-05-22 --port 3001
+npm run dev
+# Or, after npm run build:
+npx wrangler dev --config dist/server/wrangler.json --port 3001
 ```
 
-This does not change production configuration or verify the newer compatibility date. Restart this preview after rebuilding so its asset manifest is refreshed.
+Restart the built preview after rebuilding so its asset manifest is refreshed.
 
 ## Quality and decisions
 
@@ -45,8 +47,17 @@ The written-guide change passed type/lint and production build checks. Browser i
 - Follow-up data fragments are preview-only: decoded registration public key, a 32-byte example challenge represented as base64url, and a shortened sign-in response with the matching challenge. Direction labels and explicit fictional/decoded labels prevent confusing these with complete wire payloads. Never include a private key in a website-bound example.
 - Follow-up validation: type/lint and production build passed; all three fragments inspected at desktop and 390px mobile widths. Long values wrap within their cards. OS light/dark switching, enlarged text, and physical devices remain unchecked.
 
+## Review corrections
+
+- The illustrative authenticator-data prefix now matches SHA-256 of `mysticcoders.com` (`JUCtq-qS…`). The earlier copied prefix described a different RP ID. Derive domain-dependent example bytes from the domain shown in the guide; a direct Node crypto calculation confirmed the correction.
+- The storage FAQ includes device-local storage such as Windows Hello. The header is the stable page h1, and changing walkthrough titles are h2 elements with their existing appearance.
+- Development failed because configuration requested a newer compatibility date than the installed runtime supported. The shared date now matches that runtime; check ordinary development startup as well as builds after future runtime changes.
+- Removed the unused Google PNG and empty Python cache directories; logo provenance identifies the served WebP. Python caches were already ignored by Git.
+
+Review-fix validation: `npm run check` and `npm run build` passed. `npm run dev -- --port 3002` served the page, and the built Worker started on port 3003 without a date override. Desktop/mobile browser inspection confirmed preserved heading appearance and readable Windows Hello wording; the accessibility tree exposed the stable h1 and changing h2. These corrections remain undeployed.
+
 ## Next steps
 
 1. Ask nondevelopers to explain what is saved, what is sent, and why a fake website cannot use the passkey after using the example.
-2. Verify OS light/dark switching, 200% text enlargement, and physical devices; update the local runtime to support the production date.
+2. Verify OS light/dark switching, 200% text enlargement, and physical devices; evaluate a coordinated runtime and compatibility-date upgrade.
 3. Review the data fragments in local preview; deploy that follow-up only with explicit authorization, then rerun live smoke checks.

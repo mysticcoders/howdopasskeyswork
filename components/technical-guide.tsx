@@ -71,7 +71,7 @@ clientDataJSON (decoded):
 }
 
 authenticatorData (base64url):
-  SZYN5YgO…
+  JUCtq-qS…
 signature (base64url):
   MEUCIQDx…`}</DataFragment>
         <p>The credential ID tells the server which saved public key to use. Matching the challenge alone is not enough: the server also checks the signature and website context. The public key was saved during setup; it does not need to be sent again for this sign-in. The private key is never sent to the website.</p>
