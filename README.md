@@ -68,6 +68,8 @@ Type/lint and production build checks passed. Desktop inspection covered all eig
 
 Added the approved one-sentence comparison above the example, including the public key saved by the website during setup. Deployed as Cloudflare version `a59b3468-0432-46a1-8a85-29ea2f3a9fe9`; the final wording was inspected on the live desktop and 390px mobile layouts. Type/lint and build passed; the introductory layout was inspected at desktop and 390px mobile widths. OS theme switching and enlarged text remain unchecked.
 
+The intro now contrasts sending a password with sending proof verified by the saved public key, and uses the full content width (the 65ch cap caused premature wrapping). Deployed as `c495c2c2-af54-4f76-adc2-e2d790f7e0fc`. Type/lint, build and production smoke checks passed; live desktop and 390px mobile layouts were visually inspected.
+
 ## Next steps
 
 1. Review the live creation-first walkthrough; ask nondevelopers how the first passkey is created, which account it belongs to, what is sent, and why a fake site cannot use it.
