@@ -58,14 +58,14 @@ The written-guide change passed type/lint and production build checks. Browser i
 
 Review-fix validation: `npm run check` and `npm run build` passed. `npm run dev -- --port 3002` served the page, and the built Worker started on port 3003 without a date override. Desktop/mobile browser inspection confirmed preserved heading appearance and readable Windows Hello wording; the accessibility tree exposed the stable h1 and changing h2. These corrections are now deployed; see Latest delivery.
 
-## Creation-first walkthrough (pending deployment)
+## Creation-first walkthrough (deployed)
 
 Readers could not tell where the first passkey came from because the walkthrough assumed one already existed. It now has eight moments: three for account authorization and creation, three for a later sign-in, and two for a fake site. An existing account must authorize enrollment; a new account can start with a passkey without first having a password. Device approval and website account checks are explained separately. FAQ and technical-guide text follow the same order.
 
-Type/lint and production build checks passed. Desktop inspection covered all eight moments; consecutive page-level Enter presses crossed phase boundaries and wrapped back to creation with focus retained. Mobile inspection covered creation, saved confirmation, prerequisite disclosure, key definitions, FAQ and technical setup text. Back resets disclosures; keyboard opening private/public definitions leaves only one open. OS theme switching, enlarged text, physical devices, and reader comprehension remain unverified. The production smoke script now expects the creation-first heading and should run after this update is authorized for deployment.
+Type/lint and production build checks passed. Desktop inspection covered all eight moments; consecutive page-level Enter presses crossed phase boundaries and wrapped back to creation with focus retained. Mobile inspection covered creation, saved confirmation, prerequisite disclosure, key definitions, FAQ and technical setup text. Back resets disclosures; keyboard opening private/public definitions leaves only one open. OS theme switching, enlarged text, physical devices, and reader comprehension remain unverified. The production smoke script now checks the creation-first heading. Deployment of commit `db8f053` passed type/lint, build, HTTPS content and five exact asset checks. Live browser verification confirmed creation and the subsequent sign-in with consecutive keyboard presses. Cloudflare version: `7a2e569f-c2db-485f-95c2-b6be9b1e4780`.
 
 ## Next steps
 
-1. Review the creation-first preview; ask nondevelopers how the first passkey is created, which account it belongs to, what is sent, and why a fake site cannot use it.
+1. Review the live creation-first walkthrough; ask nondevelopers how the first passkey is created, which account it belongs to, what is sent, and why a fake site cannot use it.
 2. Verify OS light/dark switching, 200% text enlargement, and physical devices; evaluate a coordinated runtime and compatibility-date upgrade.
 3. Run the extended production smoke checks after each authorized deployment.
