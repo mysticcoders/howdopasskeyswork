@@ -61,6 +61,6 @@ Audio/header removal validation: all four playback tests, TypeScript, edited-sou
 
 ## Source repository
 
-Source: https://github.com/kinabalu/howdopasskeyswork. The compact header links to this public repository and to the FAQ below. Local dependencies, build output, environment files, browser artifacts, and caches are excluded from version control. Creating/pushing the repository does not deploy the Cloudflare Worker.
+Source: https://github.com/mysticcoders/howdopasskeyswork. The compact header links to this public repository and to the FAQ below. Local dependencies, build output, environment files, browser artifacts, and caches are excluded from version control. Creating/pushing the repository does not deploy the Cloudflare Worker.
 
 Compact-header validation: playback tests, TypeScript, edited-source lint, and Worker build passed. Desktop and 390px mobile header layouts were inspected; FAQ anchor and logo return-to-top navigation passed. Icons have accessible link names and 44px targets. Existing OS appearance/enlarged-text and local emulator date limitations remain.
