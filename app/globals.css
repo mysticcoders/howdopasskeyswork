@@ -56,3 +56,4 @@ progress.timeline{appearance:none;border:0;width:100%;display:block}progress.tim
 @media(max-width:520px){.guide-packet{padding:14px}.guide-packet pre{padding:12px}}
 
 .compact-header .site-title{font:inherit;letter-spacing:inherit;margin:0;min-width:0}
+.passkey-intro{font-size:1.125rem;line-height:1.65;color:var(--muted-foreground);margin:0 0 24px;max-width:65ch}

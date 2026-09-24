@@ -64,6 +64,10 @@ Readers could not tell where the first passkey came from because the walkthrough
 
 Type/lint and production build checks passed. Desktop inspection covered all eight moments; consecutive page-level Enter presses crossed phase boundaries and wrapped back to creation with focus retained. Mobile inspection covered creation, saved confirmation, prerequisite disclosure, key definitions, FAQ and technical setup text. Back resets disclosures; keyboard opening private/public definitions leaves only one open. OS theme switching, enlarged text, physical devices, and reader comprehension remain unverified. The production smoke script now checks the creation-first heading. Deployment of commit `db8f053` passed type/lint, build, HTTPS content and five exact asset checks. Live browser verification confirmed creation and the subsequent sign-in with consecutive keyboard presses. Cloudflare version: `7a2e569f-c2db-485f-95c2-b6be9b1e4780`.
 
+## Intro sentence (pending deployment)
+
+Added one plain-language comparison of a passkey and password directly above the example. Type/lint and build passed; the introductory layout was inspected at desktop and 390px mobile widths. OS theme switching and enlarged text remain unchecked.
+
 ## Next steps
 
 1. Review the live creation-first walkthrough; ask nondevelopers how the first passkey is created, which account it belongs to, what is sent, and why a fake site cannot use it.
