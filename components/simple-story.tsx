@@ -11,6 +11,24 @@ const moments = [
   { heading: 'Save it once. Use it next time.', copy: 'On a website that supports passkeys, choose “Create a passkey,” pick where to save it, and approve on your device. Then it’s ready for your next visit.', action: 'Try the story again', question: 'Can I use it on another device?', answer: 'Synced passkeys can be made available on other supported devices by your password manager. Device-bound passkeys stay on one device or physical security key. Have another sign-in or recovery option ready in case you lose access.' },
 ];
 
+type KeyTerm = 'private key' | 'public key';
+const keyDefinitions: Record<KeyTerm, string> = {
+  'private key': 'A secret number that makes your sign-in proof, called a digital signature. Your password manager or security key protects it. It is never sent to the website. Some password managers securely sync it across your devices; a device-bound passkey stays on one device or security key.',
+  'public key': 'The matching number the website keeps with your account. It checks signatures made by your private key. It can check the proof, but cannot make that proof or be used to work out your private key.',
+};
+
+function AnswerWithKeys({ text }: { text: string }) {
+  const [openKey, setOpenKey] = useState<KeyTerm | null>(null);
+  const parts = text.split(/(private key|public key)/g);
+  return <>
+    <p className="simple-answer">{parts.map((part, index) => {
+      if ((part !== 'private key' && part !== 'public key') || parts.indexOf(part) !== index) return part;
+      return <button key={part} type="button" className="key-term" aria-expanded={openKey === part} aria-controls={`definition-${part.replace(' ', '-')}`} onClick={() => setOpenKey(openKey === part ? null : part)}>{part}<span aria-hidden="true">{openKey === part ? ' −' : ' +'}</span></button>;
+    })}</p>
+    {(['private key', 'public key'] as const).filter(term => parts.includes(term)).map(term => <div key={term} id={`definition-${term.replace(' ', '-')}`} className="key-definition" hidden={openKey !== term}><h2>{term === 'private key' ? 'Your private key makes the proof.' : 'The public key checks the proof.'}</h2><p>{keyDefinitions[term]}</p></div>)}
+  </>;
+}
+
 export function SimpleStory() {
   const [step, setStep] = useState(0);
   const [expanded, setExpanded] = useState(false);
@@ -26,7 +44,7 @@ export function SimpleStory() {
         <div aria-live="polite" aria-atomic="true"><h1 id="simple-title">{moment.heading}</h1><p className="simple-description">{moment.copy}</p></div>
         <div className="simple-actions"><button ref={primaryRef} className="primary-button" onClick={() => go((step + 1) % moments.length)}>{moment.action}<ArrowRight size={18}/></button>{step > 0 && <button className="simple-back" onClick={() => go(step - 1)}><ArrowLeft size={16}/> Back</button>}</div>
         <button className="curiosity-button" aria-expanded={expanded} aria-controls="simple-detail" onClick={() => setExpanded(!expanded)}>{moment.question}<span aria-hidden="true">{expanded ? '−' : '+'}</span></button>
-        <div id="simple-detail" hidden={!expanded}><p className="simple-answer">{moment.answer}</p></div>
+        <div id="simple-detail" hidden={!expanded}>{expanded && <AnswerWithKeys key={step} text={moment.answer}/>}</div>
       </div>
       <div className={`pretend-browser ${fake ? 'pretend-fake' : ''}`} aria-label="Illustration of the pretend sign-in">
         <div className="pretend-address"><Globe size={16}/><span>{fake ? 'mysticcoders-login.example' : 'mysticcoders.com'}</span><span className="example-tag">EXAMPLE</span></div>
