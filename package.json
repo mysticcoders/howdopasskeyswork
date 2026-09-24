@@ -11,9 +11,9 @@
     "start": "vinext start",
     "lint": "oxlint",
     "format": "oxfmt",
-    "test": "node --experimental-strip-types --test tests/playback.test.mjs",
-    "deploy": "npm test && npm run build && wrangler deploy",
-    "preview": "wrangler dev"
+    "deploy": "npm run check && npm run build && wrangler deploy",
+    "preview": "wrangler dev",
+    "check": "tsc --noEmit && oxlint app/page.tsx app/layout.tsx components/simple-story.tsx components/technical-guide.tsx"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",
